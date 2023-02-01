@@ -39,7 +39,7 @@ function createRouter() {
           route.fragmentRegExp.test(window.location.hash)
         );
 
-        if (currentRoute.params.length) {
+        if (true) {
           // path parameters가 있는 url인 경우
           const urlParams = getUrlParams(currentRoute, window.location.hash);
           currentRoute.component(urlParams);
