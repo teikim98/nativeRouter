@@ -39,7 +39,7 @@ function createRouter() {
           route.fragmentRegExp.test(window.location.hash)
         );
 
-        if (true) {
+        if (currentRoute.params.length) {
           // path parameters가 있는 url인 경우
           const urlParams = getUrlParams(currentRoute, window.location.hash);
           currentRoute.component(urlParams);
@@ -52,6 +52,7 @@ function createRouter() {
     },
 
     navigate(fragment, replace = false) {
+      // path parameters가 있는 url인 경우
       if (replace) {
         const href = window.location.href.replace(
           window.location.hash,
@@ -65,7 +66,42 @@ function createRouter() {
     },
   };
 
+  
+
   return router;
 }
+
+const router = {
+  ...
+  start() {
+    const getUrlParams = (route, hash) => {
+      const params = {};
+      const matches = hash.match(route.fragmentRegExp);
+
+      matches.shift(); // 배열의 첫번째 값에는 url 전체가 담겨있으므로 제거해준다.
+      matches.forEach((paramValue, index) => {
+        const paramName = route.params[index];
+        params[paramName] = paramValue;
+      });
+      // params = {name: 'IU', song: 'raindrop'}
+      return params;
+    };
+
+    const checkRoutes = () => {
+      const currentRoute = routes.find(route => 
+        route.fragmentRegExp.test(window.location.hash));
+      
+      if(currentRoute.params.length) {
+        // path parameters가 있는 url인 경우
+        const urlParams = getUrlParams(currentRoute, window.location.hash)
+        currentRoute.component(urlParams);
+      } else {
+        currentRoute.component();
+      }
+   
+    };
+    ...
+  };
+};
 
 export default createRouter;
